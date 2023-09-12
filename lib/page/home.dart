@@ -1,5 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:furnicom/page/feedback.dart';
+import 'package:furnicom/page/userprofile.dart';
 
 import '../core/color.dart';
 import '../core/space.dart';
@@ -78,17 +80,35 @@ class _HomePageState extends State<HomePage> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     bottomNavButton(
-                      onPress: () {},
+                      onPress: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => HomePage(),
+                            ));
+                      },
                       icon: Icons.home_outlined,
                     ),
                     SpaceVH(width: 60),
                     bottomNavButton(
-                      onPress: () {},
+                      onPress: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => feedback(),
+                            ));
+                      },
                       icon: Icons.chat_outlined,
                     ),
                     SpaceVH(width: 60),
                     bottomNavButton(
-                      onPress: () {},
+                      onPress: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => Userprofile(),
+                            ));
+                      },
                       icon: Icons.person_outline_outlined,
                     ),
                   ],

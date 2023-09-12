@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:furnicom/page/cart.dart';
 
 import '../core/color.dart';
 import '../core/space.dart';
@@ -43,8 +44,9 @@ class _DetailsPageState extends State<DetailsPage> {
             onPressed: () {},
             icon: Icon(
               Icons.favorite_border_outlined,
-              color: black,
-            ),
+              color: black),
+
+
           )
         ],
       ),
@@ -201,6 +203,21 @@ class _DetailsPageState extends State<DetailsPage> {
                           'Buy Now',
                           style: itemCardHeading.copyWith(color: white),
                         ),
+                      ),
+                    ),
+                    TextButton(
+                      onPressed: () {
+                    //    Navigator.push(context, MaterialPageRoute(builder: (context)=>ResultCart()));
+                      },
+                      style: TextButton.styleFrom(
+                        backgroundColor: Color(0xFF387B74),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(50.0),
+                        ),
+                      ),
+                      child: Text(
+                        'Add to Cart',
+                        style: itemCardHeading.copyWith(color: white),
                       ),
                     )
                   ],

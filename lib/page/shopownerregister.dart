@@ -3,14 +3,14 @@ import 'package:flutter/material.dart';
 
 import 'login.dart';
 
-class Userregister extends StatefulWidget {
-  const Userregister({Key? key}) : super(key: key);
+class Shopownerregister extends StatefulWidget {
+  const Shopownerregister({Key? key}) : super(key: key);
 
   @override
-  State<Userregister> createState() => _UserregisterState();
+  State<Shopownerregister> createState() => _ShopownerregisterState();
 }
 
-class _UserregisterState extends State<Userregister> {
+class _ShopownerregisterState extends State<Shopownerregister> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -43,8 +43,8 @@ class _UserregisterState extends State<Userregister> {
 
 
                   decoration: InputDecoration(
-                    labelText: "name",
-                    hintText: "Enter Your Name",
+                    labelText: "Shop Name",
+                    hintText: "Enter Your Shop Name",
                     prefixIcon: Icon(Icons.mail),
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(30),),
@@ -66,42 +66,27 @@ class _UserregisterState extends State<Userregister> {
                     ),
                   )),
               Padding(
-                padding: const EdgeInsets.all(8),
-                child: TextFormField(
-
-
-                  decoration: InputDecoration(
-                    labelText: "pin code",
-                    hintText: "Enter Your Pin Code",
-                    prefixIcon: Icon(Icons.location_on),
-                    border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(30)),
-                  ),
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.all(8),
-                child: TextFormField(
-
-
-                  decoration: InputDecoration(
-                    labelText: "place",
-                    hintText: "Enter Your Place",
-                    prefixIcon: Icon(Icons.location_on),
-                    border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(30)),
-                  ),
-                ),
-              ),
-              Padding(
                   padding: const EdgeInsets.all(8),
                   child: TextFormField(
                     keyboardType: TextInputType.emailAddress,
 
                     decoration: InputDecoration(
                       labelText: "email",
-                      hintText: "email",
+                      hintText: "Enter Your Email",
                       prefixIcon: Icon(Icons.mail),
+                      border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(30)),
+                    ),
+                  )),
+              Padding(
+                  padding: const EdgeInsets.all(8),
+                  child: TextFormField(
+                    keyboardType: TextInputType.emailAddress,
+
+                    decoration: InputDecoration(
+                      labelText: "place",
+                      hintText: "Enter Your Place",
+                      prefixIcon: Icon(Icons.location_on),
                       border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(30)),
                     ),
@@ -121,35 +106,33 @@ class _UserregisterState extends State<Userregister> {
                           borderRadius: BorderRadius.circular(30)),
                     ),
                   )),
+
               Padding(
-                padding: const EdgeInsets.all(8),
-                child: TextFormField(
+                  padding: const EdgeInsets.all(8),
+                  child: TextFormField(
+                    keyboardType: TextInputType.emailAddress,
 
-
-                  decoration: InputDecoration(
-                    labelText: "username",
-                    hintText: "Enter Your username",
-                    prefixIcon: Icon(Icons.person),
-                    border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(30)),
-                  ),
-                ),
-              ),
+                    decoration: InputDecoration(
+                      labelText: "username",
+                      hintText: "Enter Your Username",
+                      prefixIcon: Icon(Icons.person),
+                      border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(30)),
+                    ),
+                  )),
               Padding(
-                padding: const EdgeInsets.all(8),
-                child: TextFormField(
+                  padding: const EdgeInsets.all(8),
+                  child: TextFormField(
+                    keyboardType: TextInputType.text,
 
-
-                  decoration: InputDecoration(
-                    labelText: "password",
-                    hintText: "Enter Your Password",
-                    prefixIcon: Icon(Icons.lock),
-                    border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(30)),
-                  ),
-                ),
-              ),
-
+                    decoration: InputDecoration(
+                      labelText: "password",
+                      hintText: "Enter Your Password",
+                      prefixIcon: Icon(Icons.lock),
+                      border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(30)),
+                    ),
+                  )),
 
               SizedBox(height: 20,),
               ElevatedButton(
@@ -189,7 +172,7 @@ class _UserregisterState extends State<Userregister> {
                     },
                     child: const Text(
                       'login',
-                      style: TextStyle(color:Color(0xFF387B74), fontSize: 16),
+                      style: TextStyle(color: Color(0xFF387B74), fontSize: 16),
                     ),
                   ),
                 ],

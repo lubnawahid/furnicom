@@ -2,6 +2,7 @@
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:furnicom/page/shopownerregister.dart';
 import 'package:furnicom/page/userregister.dart';
 
 
@@ -31,7 +32,7 @@ class _RegistrationState extends State<Registration> {
 
                     GestureDetector(
                       onTap: () {
-                   //     Navigator.push(context, MaterialPageRoute(builder: (context)=>Shopownerregister()));
+                       Navigator.push(context, MaterialPageRoute(builder: (context)=>Shopownerregister()));
                       },
 
                       child:  Container(decoration:BoxDecoration(borderRadius: BorderRadius.circular(40),color:Color(0xFF387B74),),
