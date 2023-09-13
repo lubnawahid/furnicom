@@ -100,6 +100,7 @@ class _HomePageState extends State<HomePage> {
                       },
                       icon: Icons.chat_outlined,
                     ),
+
                     SpaceVH(width: 60),
                     bottomNavButton(
                       onPress: () {
@@ -110,6 +111,17 @@ class _HomePageState extends State<HomePage> {
                             ));
                       },
                       icon: Icons.person_outline_outlined,
+                    ),
+                    SpaceVH(width: 60),
+                    bottomNavButton(
+                      onPress: () {
+                        // Navigator.push(
+                        //     context,
+                        //     MaterialPageRoute(
+                        //       builder: (context) => feedback(),
+                        //     ));
+                      },
+                      icon: Icons.notifications,
                     ),
                   ],
                 ),

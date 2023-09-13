@@ -1,6 +1,10 @@
+import 'dart:convert';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
+import 'api.dart';
 import 'login.dart';
 
 class Shopownerregister extends StatefulWidget {
@@ -11,6 +15,53 @@ class Shopownerregister extends StatefulWidget {
 }
 
 class _ShopownerregisterState extends State<Shopownerregister> {
+  bool _isLoading = false;
+  final _formKey = GlobalKey<FormState>();
+  bool _obscureText = true;
+  TextEditingController shopnameController = TextEditingController();
+  TextEditingController addressController = TextEditingController();
+  TextEditingController emailcontroller = TextEditingController();
+  TextEditingController phonenumberController = TextEditingController();
+  TextEditingController placeController = TextEditingController();
+  TextEditingController usernameController = TextEditingController();
+  TextEditingController passwordController = TextEditingController();
+  void registerShopowner() async {
+    setState(() {
+      _isLoading = true;
+    });
+    var data = {
+      "shopname": shopnameController.text.trim(),
+      "address": addressController.text.trim(),
+
+      "email": emailcontroller.text.trim(),
+      "phonenumber": phonenumberController.text,
+      "place": placeController.text.trim(),
+      "username": usernameController.text,
+      "password": passwordController.text,
+    };
+    print("user data${data}");
+    var res = await Api().authData(data,'/api/shopowner_register');
+    var body = json.decode(res.body);
+    print('body${body}');
+    if(body['success']==true)
+    {
+      Fluttertoast.showToast(
+        msg: body['message'].toString(),
+        backgroundColor: Colors.grey,
+      );
+
+      Navigator.push(context, MaterialPageRoute(builder: (context)=>Login()));
+
+    }
+    else
+    {
+      Fluttertoast.showToast(
+        msg: body['message'].toString(),
+        backgroundColor: Colors.grey,
+      );
+
+    }
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -40,108 +91,182 @@ class _ShopownerregisterState extends State<Shopownerregister> {
               Padding(
                 padding: const EdgeInsets.all(8),
                 child: TextFormField(
-
-
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'please enter some text';
+                    }
+                    return null;
+                  },
+                  controller: shopnameController,
                   decoration: InputDecoration(
-                    labelText: "Shop Name",
-                    hintText: "Enter Your Shop Name",
-                    prefixIcon: Icon(Icons.mail),
+                    labelText: "shopname",
+                    hintText: "Enter Your Shopname",
+                    prefixIcon: Icon(Icons.person),
                     border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(30),),
+                        borderRadius: BorderRadius.circular(30)),
+                  ),
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.all(8),
+                child: TextFormField(
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'please enter some text';
+                    }
+                    return null;
+                  },
+                  controller: addressController,
+                  decoration: InputDecoration(
+                    labelText: "address",
+                    hintText: "Enter Your address",
+                    prefixIcon: Icon(Icons.location_on),
+                    border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(30)),
                   ),
                 ),
               ),
               Padding(
                   padding: const EdgeInsets.all(8),
-                  child:TextFormField(
-
-
-                    decoration: InputDecoration(
-                      labelText: "address",
-                      hintText: "Enter Your Address",
-                      prefixIcon: Icon(Icons.location_on),
-                      border: OutlineInputBorder(
-
-                          borderRadius: BorderRadius.circular(30)),
-                    ),
-                  )),
-              Padding(
-                  padding: const EdgeInsets.all(8),
                   child: TextFormField(
-                    keyboardType: TextInputType.emailAddress,
+                    validator: (valueMail) {
+                      if (valueMail!.isEmpty) {
+                        return 'Please enter Email Id';
+                      }
 
+                      RegExp email = new RegExp(
+                          r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+");
+                      if (email.hasMatch(valueMail)) {
+                        return null;
+                      } else {
+                        return 'Invalid Email Id';
+                      }
+                    },
+                    keyboardType: TextInputType.emailAddress,
+                    controller: emailcontroller,
                     decoration: InputDecoration(
-                      labelText: "email",
-                      hintText: "Enter Your Email",
+                      labelText: " email",
+                      hintText: "email",
                       prefixIcon: Icon(Icons.mail),
                       border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(30)),
                     ),
                   )),
               Padding(
-                  padding: const EdgeInsets.all(8),
-                  child: TextFormField(
-                    keyboardType: TextInputType.emailAddress,
-
-                    decoration: InputDecoration(
-                      labelText: "place",
-                      hintText: "Enter Your Place",
-                      prefixIcon: Icon(Icons.location_on),
-                      border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(30)),
-                    ),
-                  )),
+                padding: const EdgeInsets.all(8),
+                child: TextFormField(
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'please enter some text';
+                    }
+                    return null;
+                  },
+                  controller: placeController,
+                  decoration: InputDecoration(
+                    labelText: "place",
+                    hintText: "Enter Your Place",
+                    prefixIcon: Icon(Icons.location_on),
+                    border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(30)),
+                  ),
+                ),
+              ),
               Padding(
                   padding: const EdgeInsets.all(8),
                   child: TextFormField(
+                    validator: (value) {
+                      if (value!.isEmpty) {
+                        return "Please enter Mobile Number";
+                      }
+                      RegExp number = new RegExp(r'(^(?:[+0]9)?[0-9]{10,12}$)');
 
+                      if (number.hasMatch(value)) {
+                        return null;
+                      } else {
+                        return 'Invalid Mobile Number';
+                      }
+                    },
                     keyboardType: TextInputType.number,
-
+                    controller: phonenumberController,
                     decoration: InputDecoration(
-                      labelText: "phone number",
+                      labelText: " phone number",
                       hintText: "phone number",
-
                       prefixIcon: Icon(Icons.phone_android),
                       border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(30)),
                     ),
                   )),
 
-              Padding(
-                  padding: const EdgeInsets.all(8),
-                  child: TextFormField(
-                    keyboardType: TextInputType.emailAddress,
+        Padding(
+            padding: const EdgeInsets.all(8),
+            child: TextFormField(
+              validator: (value) {
+                if (value == null || value.isEmpty) {
+                  return 'please enter some text';
+                }
+                return null;
+              },
+              controller: usernameController,
+              decoration: InputDecoration(
+                labelText: "username",
+                hintText: "username",
+                prefixIcon: Icon(Icons.person),
+                border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(30)),
+              ),
+            )),
+        Padding(
+            padding: const EdgeInsets.all(8),
+            child: TextFormField(
+              validator: (valuePass) {
+                if (valuePass!.isEmpty) {
+                  return 'Please enter your password';
+                } else if (valuePass.length < 6) {
+                  return 'Password is too short';
+                } else {
+                  return null;
+                }
+              },
+              obscureText: _obscureText,
+              controller: passwordController,
+              decoration: InputDecoration(
+                labelText: "password",
+                hintText: "password",
+                prefixIcon: Icon(Icons.lock),
+                border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(30)),
+              ),
+            )),
+        Padding(
+            padding: const EdgeInsets.all(8),
+            child: TextFormField(
+              validator: (valueConPass) {
+                if (valueConPass!.isEmpty) {
+                  return 'Please confirm your Password';
+                } else if (valueConPass.length < 6) {
+                  return 'Please check your password';
+                } else if (valueConPass == passwordController) {
+                  return null;
+                }
+              },
+              obscureText: _obscureText,
+              decoration: InputDecoration(
+                labelText: "confirm password",
+                hintText: "confirm password",
+                prefixIcon: Icon(Icons.lock),
+                border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(30)),
+              ),
+            )),
 
-                    decoration: InputDecoration(
-                      labelText: "username",
-                      hintText: "Enter Your Username",
-                      prefixIcon: Icon(Icons.person),
-                      border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(30)),
-                    ),
-                  )),
-              Padding(
-                  padding: const EdgeInsets.all(8),
-                  child: TextFormField(
-                    keyboardType: TextInputType.text,
 
-                    decoration: InputDecoration(
-                      labelText: "password",
-                      hintText: "Enter Your Password",
-                      prefixIcon: Icon(Icons.lock),
-                      border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(30)),
-                    ),
-                  )),
-
-              SizedBox(height: 20,),
+              SizedBox(
+                height: 20,
+              ),
               ElevatedButton(
                 onPressed: () {
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => Login(),
-                      ));
+
+                  registerShopowner();
                 },
                 style: ElevatedButton.styleFrom(
                     shape: RoundedRectangleBorder(
@@ -172,7 +297,7 @@ class _ShopownerregisterState extends State<Shopownerregister> {
                     },
                     child: const Text(
                       'login',
-                      style: TextStyle(color: Color(0xFF387B74), fontSize: 16),
+                      style: TextStyle(color:Color(0xFF387B74),fontSize: 16),
                     ),
                   ),
                 ],
