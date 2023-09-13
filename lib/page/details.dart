@@ -207,7 +207,7 @@ class _DetailsPageState extends State<DetailsPage> {
                     ),
                     TextButton(
                       onPressed: () {
-                    //    Navigator.push(context, MaterialPageRoute(builder: (context)=>ResultCart()));
+                       Navigator.push(context, MaterialPageRoute(builder: (context)=>Cart()));
                       },
                       style: TextButton.styleFrom(
                         backgroundColor: Color(0xFF387B74),

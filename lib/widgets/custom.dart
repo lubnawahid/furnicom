@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:furnicom/page/cart.dart';
 
 import '../core/color.dart';
 
@@ -22,8 +23,11 @@ class _CustomAppBarState extends State<CustomAppBar> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Icon(Icons.menu),
+
           InkWell(
-            onTap: () {},
+            onTap: () {
+              Navigator.push(context, MaterialPageRoute(builder: (context)=>Cart()));
+            },
             splashColor: white,
             child: Container(
               height: 65.0,
@@ -40,7 +44,9 @@ class _CustomAppBarState extends State<CustomAppBar> {
               child: Icon(
                 Icons.shopping_cart_outlined,
                 color: white,
+
               ),
+
             ),
           )
         ],
