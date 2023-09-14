@@ -4,7 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
-import 'api.dart';
+import '../services/api.dart';
 import 'login.dart';
 
 class Shopownerregister extends StatefulWidget {
@@ -39,7 +39,7 @@ class _ShopownerregisterState extends State<Shopownerregister> {
       "username": usernameController.text,
       "password": passwordController.text,
     };
-    print("user data${data}");
+    print("Shopowner data${data}");
     var res = await Api().authData(data,'/api/shopowner_register');
     var body = json.decode(res.body);
     print('body${body}');

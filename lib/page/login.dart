@@ -6,11 +6,12 @@ import 'dart:convert';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:furnicom/homescreen.dart';
+
 import 'package:furnicom/page/registration.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import 'api.dart';
+import '../shopowner/homescreen.dart';
+import '../services/api.dart';
 import 'home.dart';
 
 
@@ -82,7 +83,7 @@ class _LoginState extends State<Login> {
       else if (sp == role &&
           ststatus == status
       ) {
-        Navigator.of(context).push(MaterialPageRoute(builder: (context) => Shomescreen()));
+        Navigator.of(context).push(MaterialPageRoute(builder: (context) => SHomePage()));
 
 
       }
