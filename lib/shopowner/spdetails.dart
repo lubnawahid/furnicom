@@ -7,15 +7,15 @@ import '../core/space.dart';
 import '../core/textstyle.dart';
 import '../model/models.dart';
 
-class DetailsPage extends StatefulWidget {
+class SPDetailsPage extends StatefulWidget {
   final Model model;
-  const DetailsPage({Key? key, required this.model}) : super(key: key);
+  const SPDetailsPage({Key? key, required this.model}) : super(key: key);
 
   @override
-  _DetailsPageState createState() => _DetailsPageState();
+  _SPDetailsPageState createState() => _SPDetailsPageState();
 }
 
-class _DetailsPageState extends State<DetailsPage> {
+class _SPDetailsPageState extends State<SPDetailsPage> {
   int selectIndex = 0;
   int qty = 1;
   @override
@@ -125,72 +125,72 @@ class _DetailsPageState extends State<DetailsPage> {
                     Container(
                       height: 40,
                       padding: EdgeInsets.symmetric(horizontal: 10.0),
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(50.0),
-                        color: gray,
-                      ),
-                      child: Center(
-                        child: Row(
-                          children: [
-                            MaterialButton(
-                              minWidth: 10,
-                              onPressed: () {
-                                setState(() {
-                                  qty++;
-                                });
-                              },
-                              child: Text(
-                                '+',
-                                style:
-                                itemCardHeading.copyWith(color: lightBlack),
-                              ),
-                            ),
-                            Text(
-                              '$qty',
-                              style:
-                              itemCardHeading.copyWith(color: lightBlack),
-                            ),
-                            MaterialButton(
-                              minWidth: 10,
-                              onPressed: () {
-                                if (qty > 1)
-                                  setState(() {
-                                    qty--;
-                                  });
-                              },
-                              child: Text(
-                                '-',
-                                style:
-                                itemCardHeading.copyWith(color: lightBlack),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
+                      // decoration: BoxDecoration(
+                      //   borderRadius: BorderRadius.circular(50.0),
+                      //   color: gray,
+                      // ),
+                      // child: Center(
+                      //   child: Row(
+                      //     children: [
+                      //       MaterialButton(
+                      //         minWidth: 10,
+                      //         onPressed: () {
+                      //           setState(() {
+                      //             qty++;
+                      //           });
+                      //         },
+                      //         child: Text(
+                      //           '+',
+                      //           style:
+                      //           itemCardHeading.copyWith(color: lightBlack),
+                      //         ),
+                      //       ),
+                      //       Text(
+                      //         '$qty',
+                      //         style:
+                      //         itemCardHeading.copyWith(color: lightBlack),
+                      //       ),
+                      //       MaterialButton(
+                      //         minWidth: 10,
+                      //         onPressed: () {
+                      //           if (qty > 1)
+                      //             setState(() {
+                      //               qty--;
+                      //             });
+                      //         },
+                      //         child: Text(
+                      //           '-',
+                      //           style:
+                      //           itemCardHeading.copyWith(color: lightBlack),
+                      //         ),
+                      //       ),
+                      //     ],
+                      //   ),
+                      // ),
                     ),
                   ],
                 ),
-                SpaceVH(height: 20.0),
-                Text(
-                  widget.model.description,
-                  style: itemCardDes,
-                ),
+                // SpaceVH(height: 20.0),
+                // Text(
+                //   widget.model.description,
+                //   style: itemCardDes,
+                // ),
                 SpaceVH(height: 20.0),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    RichText(
-                      text: TextSpan(children: [
-                        TextSpan(
-                          text: 'Total Price\n',
-                          style: subHeading,
-                        ),
-                        TextSpan(
-                          text: widget.model.price,
-                          style: itemCardHeading,
-                        ),
-                      ]),
-                    ),
+                    // RichText(
+                    //   text: TextSpan(children: [
+                    //     TextSpan(
+                    //       text: 'Total Price\n',
+                    //       style: subHeading,
+                    //     ),
+                    //     TextSpan(
+                    //       text: widget.model.price,
+                    //       style: itemCardHeading,
+                    //     ),
+                    //   ]),
+                    // ),
                     Container(
                       height: 40.0,
                       padding: EdgeInsets.symmetric(horizontal: 20.0),
@@ -198,7 +198,16 @@ class _DetailsPageState extends State<DetailsPage> {
                         color: green,
                         borderRadius: BorderRadius.circular(50.0),
                       ),
-                      child: Center(
+                  child:    TextButton(
+                        onPressed: () {
+                          //  Navigator.push(context, MaterialPageRoute(builder: (context)=>Cart()));
+                        },
+                        style: TextButton.styleFrom(
+                          backgroundColor: Color(0xFF387B74),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(50.0),
+                          ),
+                        ),
                         child: Text(
                           'Update',
                           style: itemCardHeading.copyWith(color: white),
@@ -207,7 +216,7 @@ class _DetailsPageState extends State<DetailsPage> {
                     ),
                     TextButton(
                       onPressed: () {
-                        Navigator.push(context, MaterialPageRoute(builder: (context)=>Cart()));
+                      //  Navigator.push(context, MaterialPageRoute(builder: (context)=>Cart()));
                       },
                       style: TextButton.styleFrom(
                         backgroundColor: Color(0xFF387B74),
