@@ -1,11 +1,16 @@
+import 'dart:convert';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:furnicom/data/tab_bar.dart';
 
 import '../core/color.dart';
 import '../core/textstyle.dart';
+import '../services/api.dart';
 
 class TabBarButton extends StatefulWidget {
+
   const TabBarButton({Key? key}) : super(key: key);
 
   @override
@@ -13,7 +18,35 @@ class TabBarButton extends StatefulWidget {
 }
 
 class _TabBarButtonState extends State<TabBarButton> {
-  int id = 0;
+  List _loaddata=[];
+  late int id =0;
+  _fetchProductData() async {
+    var res = await Api()
+        .getData('/api/product_all_view');
+    if (res.statusCode == 200) {
+      var items = json.decode(res.body)['data'];
+      print(items);
+      setState(() {
+        _loaddata = items;
+      });
+    } else {
+      setState(() {
+        _loaddata = [];
+        Fluttertoast.showToast(
+          msg: "Currently there is no data available",
+          backgroundColor: Colors.grey,
+        );
+      }
+      );
+    }
+  }
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    _fetchProductData();
+  }
+  //nt id = 0;
   @override
   Widget build(BuildContext context) {
     return Row(

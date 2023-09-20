@@ -12,6 +12,7 @@ import '../data/model_data.dart';
 import '../widgets/custom.dart';
 import '../widgets/item.dart';
 import '../widgets/tab.dart';
+import 'custom.dart';
 
 class SHomePage extends StatefulWidget {
   @override
@@ -29,7 +30,7 @@ class _SHomePageState extends State<SHomePage> {
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            CustomAppBar(),
+            SCustomAppBar(),
             Text(
               'Furniture in\nunique style',
               style: heading,
@@ -42,7 +43,9 @@ class _SHomePageState extends State<SHomePage> {
             SpaceVH(height: 20),
             Container(
               height: 70.0,
-              child: TabBarButton(),
+              child: TabBarButton(
+
+              ),
             ),
             Expanded(
               child: ListView.builder(
@@ -134,8 +137,7 @@ class _SHomePageState extends State<SHomePage> {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          Navigator.push(context,MaterialPageRoute(builder: (context) => Addproduct()
-                 ));
+
         },
         backgroundColor: green, // Set the background color of the FAB.
         child: Icon(Icons.add), // Set the icon for the FAB.
