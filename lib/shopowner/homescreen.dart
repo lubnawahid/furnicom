@@ -2,7 +2,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:furnicom/page/feedback.dart';
 import 'package:furnicom/page/userprofile.dart';
-import 'package:furnicom/shopowner/addproduct.dart';
+import 'package:furnicom/shopowner/addprdct.dart';
+
 import 'package:furnicom/shopowner/spitem.dart';
 
 import '../core/color.dart';
@@ -137,7 +138,11 @@ class _SHomePageState extends State<SHomePage> {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-
+          Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => AddProduct(),
+              ));
         },
         backgroundColor: green, // Set the background color of the FAB.
         child: Icon(Icons.add), // Set the icon for the FAB.
