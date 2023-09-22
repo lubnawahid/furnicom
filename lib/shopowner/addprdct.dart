@@ -32,14 +32,13 @@ class _AddProductState extends State<AddProduct> {
   Future<void> submitForm(String Productname, String Description, String Price,
       String Quantity, String images) async {
     prefs = await SharedPreferences.getInstance();
-    var shopowner = (prefs.getInt('shopowner') ?? 0);
+    var shopowner = (prefs.getInt('shopownerregister') ?? 0);
 
-    var uri =
-    Uri.parse(Api().url + '/api/product'); // Replace with your API endpoint
+    var uri = Uri.parse(Api().url + '/api/product'); // Replace with your API endpoint
 
     var request = http.MultipartRequest('POST', uri);
 
-    //request.fields['shopowner'] = shopowner.toString();
+   // request.fields['shopownerregister'] = shopowner.toString();
     request.fields['productname'] = Productname;
     request.fields['description'] = Description;
     request.fields['price'] = Price;
