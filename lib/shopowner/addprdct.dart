@@ -1,7 +1,10 @@
 
 
+import 'dart:convert';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:furnicom/shopowner/homescreen.dart';
 import 'package:furnicom/shopowner/productallview.dart';
 import 'package:image_picker/image_picker.dart';
@@ -20,89 +23,123 @@ class AddProduct extends StatefulWidget {
 }
 
 class _AddProductState extends State<AddProduct> {
-  File? imageFile;
-  late final _filename;
-  late final bytes;
   late SharedPreferences prefs;
-  TextEditingController productnameController = TextEditingController();
-  TextEditingController descriptionController = TextEditingController();
-  TextEditingController priceController = TextEditingController();
-  TextEditingController quantityController = TextEditingController();
+  late int shopowner_id;
+  List _loaddata=[];
 
-  Future<void> submitForm(String Productname, String Description, String Price,
-      String Quantity, String images) async {
-    prefs = await SharedPreferences.getInstance();
-    var shopowner = (prefs.getInt('shopownerregister') ?? 0);
+  _fetchData() async {
+    var res = await Api()
+        .getData('/api/category_all_view');
+    if (res.statusCode == 200) {
+      var items = json.decode(res.body)['data'];
+      print(items);
+      setState(() {
+        _loaddata = items;
 
-    var uri = Uri.parse(Api().url + '/api/product'); // Replace with your API endpoint
-
-    var request = http.MultipartRequest('POST', uri);
-
-   // request.fields['shopownerregister'] = shopowner.toString();
-    request.fields['productname'] = Productname;
-    request.fields['description'] = Description;
-    request.fields['price'] = Price;
-    request.fields['quantity'] = Quantity;
-
-    request.fields['images'] = images;
-
-    print(request.fields);
-    final imageStream = http.ByteStream(imageFile!.openRead());
-    final imageLength = await imageFile!.length();
-
-    final multipartFile = await http.MultipartFile(
-      'images', imageStream, imageLength,
-      filename: _filename,
-// contentType: MediaType('image', 'jpeg'), // Replace with your desired image type
-    );
-    request.files.add(multipartFile);
-
-    final response = await request.send();
-    print(response);
-
-    if (response.statusCode == 201) {
-      print('Form submitted successfully');
-       Navigator.push(this.context, MaterialPageRoute(builder: (context) => Aproduct()));
-    }
-    else {
-      print('Error submitting form. Status code: ${response.statusCode}');
+      });
+    } else {
+      setState(() {
+        _loaddata = [];
+        Fluttertoast.showToast(
+          msg:"Currently there is no data available",
+          backgroundColor: Colors.grey,
+        );
+      });
     }
   }
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    _fetchData();
+  }
+  bool _isLoading=false;
+  TextEditingController productnameController=TextEditingController();
+  TextEditingController descriptionController=TextEditingController();
+  TextEditingController quantityController=TextEditingController();
+  TextEditingController priceController=TextEditingController();
+
+
+  final _formKey = GlobalKey<FormState>();
+  // void Addproduct()async {
+  //   setState(() {
+  //     _isLoading = true;
+  //   });
+  //
+  //
+  //   var data = {
+  //     "name": nameController.text.trim(),
+  //     "description": descController.text.trim(),
+  //     "amount": amountController.text.trim(),
+  //     "dimension": dimensionController.text.trim(),
+  //     "colour": colourController.text.trim(),
+  //     // "category": dropdownvalue,
+  //     "image":imageFile,
+  //   };
+  //   print("Product data${data}");
+  //   var res = await Api().authData(data, '/api/add_product');
+  //   var body = json.decode(res.body);
+  //   print('res${res}');
+  //   if (body['success'] == true) {
+  //     Fluttertoast.showToast(
+  //       msg: body['message'].toString(),
+  //       backgroundColor: Colors.grey,
+  //     );
+  //
+  //     Navigator.push(
+  //         context as BuildContext, MaterialPageRoute(builder: (context) => Aproduct()));
+  //   }
+  //   else {
+  //     Fluttertoast.showToast(
+  //       msg: body['message'].toString(),
+  //       backgroundColor: Colors.grey,
+  //     );
+  //   }
+  // }
+
+  // Initial Selected Value
+  var dropdownvalue ;
+
+
+  File? imageFile;
+
+  late  final _filename;
+  late  final bytes;
 
   Future<void> _showChoiceDialog(BuildContext context) {
     return showDialog(
         context: context,
         builder: (BuildContext context) {
           return AlertDialog(
-            title: Column(
-              children: [
-                Text("Choose From"),
-                SizedBox(
-                  height: 20,
-                ),
-                InkWell(
+            title: const Text("Choose from"),
+            content: SingleChildScrollView(
+              child: ListBody(
+                children: <Widget>[
+                  GestureDetector(
+                    child: const Text("Gallery"),
                     onTap: () {
                       _getFromGallery();
-
                       Navigator.pop(context);
+                      //  _openGallery(context);
                     },
-                    child: Text("Gallery")),
-                SizedBox(
-                  height: 20,
-                ),
-                InkWell(
+                  ),
+                  SizedBox(height: 10),
+                  const Padding(padding: EdgeInsets.all(0.0)),
+                  GestureDetector(
+                    child: const Text("Camera"),
                     onTap: () {
                       _getFromCamera();
 
                       Navigator.pop(context);
+                      //   _openCamera(context);
                     },
-                    child: Text("camera")),
-              ],
+                  ),
+                ],
+              ),
             ),
           );
         });
   }
-
   _getFromGallery() async {
     PickedFile? pickedFile = await ImagePicker().getImage(
       source: ImageSource.gallery,
@@ -110,7 +147,8 @@ class _AddProductState extends State<AddProduct> {
       maxHeight: 1800,
     );
     if (pickedFile != null) {
-      setState(() {
+      setState(()  {
+
         imageFile = File(pickedFile.path);
         _filename = basename(imageFile!.path);
         final _nameWithoutExtension = basenameWithoutExtension(imageFile!.path);
@@ -133,186 +171,253 @@ class _AddProductState extends State<AddProduct> {
     if (pickedFile != null) {
       setState(() {
         imageFile = File(pickedFile.path);
-//  _filename = basename(imageFile!.path).toString();
+        //  _filename = basename(imageFile!.path).toString();
         final _nameWithoutExtension = basenameWithoutExtension(imageFile!.path);
         final _extenion = extension(imageFile!.path);
       });
     }
   }
+  Future<void> submitForm(String productname, String description, String price, String quantity,String category) async {
+    var uri = Uri.parse(Api().url+'/api/products'); // Replace with your API endpoint
+
+    prefs = await SharedPreferences.getInstance();
+    shopowner_id = (prefs.getInt('user_id') ?? 0 );
+    var request = http.MultipartRequest('POST', uri);
+
+
+    request.fields['productname'] = productname;
+    request.fields['description'] = description;
+    request.fields['price'] = price;
+    request.fields['quantity'] = quantity;
+    request.fields['category'] = category;
+    request.fields['shopownerregister'] =shopowner_id.toString();
+
+    print(request.fields);
+    final imageStream = http.ByteStream(imageFile!.openRead());
+    final imageLength = await imageFile!.length();
+
+    final multipartFile = await http.MultipartFile(
+      'images',imageStream,imageLength,
+      filename: _filename ,
+      // contentType: MediaType('image', 'jpeg'), // Replace with your desired image type
+    );
+    request.fields.addAll({
+      "productname":"chair",
+      "description":"wooden chair",
+      "price":"5000",
+      "quantity" : "1",
+      "category": "1",
+      "shopowneregister": "7"
+    });
+    request.files.add(multipartFile);
+    print(_filename);
+
+    final response = await request.send();
+     print('response');
+     print(response.statusCode);
+    if (response.statusCode == 201) {
+      print('Form submitted successfully');
+      Navigator.push(
+          this.context, MaterialPageRoute(builder: (context) => Aproduct()));
+    } else {
+      print('Error submitting form. Status code: ${response.statusCode}');
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Scaffold(
-        body: SingleChildScrollView(
-          child: Column(
-            children: [
-              const Text(
-                "Add Product",
-                style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
-              ),
-              // Image.asset(
-              //   "Images/AddProducts.jpg",
-              //   width: 540.0,
-              //   height: 350.0,
-              //   fit: BoxFit.fill,
-              // ),
-              Padding(
-                padding: EdgeInsets.all(8.0),
-                child: TextFormField(
-                    controller: productnameController,
-                    validator: (value) {
-                      if (value == null || value.trim().isEmpty) {
-                        return 'This field is required';
-                      }
 
-// Return null if the entered password is valid
-                      return null;
-                    },
+    return Scaffold(
+      appBar: AppBar(
+        flexibleSpace: Container(
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+              colors: [Colors.blue,  Color(0xFF387B74)],
+            ),
+          ),
+        ),
+        leading:
+        IconButton(onPressed: () {
+          Navigator.pop(context);
+        }, icon: Icon(Icons.arrow_back_ios, size: 20, color: Colors.black,)),
+        title: Text('Add product'),
+      ),
+      body: SingleChildScrollView(
+        child: Column(
+
+          children: [
+            SizedBox(height: 20,),
+            Container(
+              padding: const EdgeInsets.all(10),
+              child: TextFormField(
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Please enter some text';
+                  }
+                  return null;
+                },
+                controller: productnameController,
+                decoration: const InputDecoration(
+
+                  border: OutlineInputBorder(),
+                  labelText: 'Product Name',
+                  hintText: 'Product Name',
+                ),
+              ),
+            ),
+
+            Container(
+              padding: const EdgeInsets.all(10),
+              child: TextFormField(
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Please enter some text';
+                  }
+                  return null;
+                },
+                controller: priceController,
+                decoration: const InputDecoration(
+
+                  border: OutlineInputBorder(),
+                  labelText: 'Product Price',
+                  hintText: 'Product Price',
+                ),
+              ),
+            ),
+            Container(
+              padding: const EdgeInsets.all(10),
+              child: TextFormField(
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Please enter some text';
+                  }
+                  return null;
+                },
+                controller: descriptionController,
+                decoration: const InputDecoration(
+
+                  border: OutlineInputBorder(),
+                  labelText: 'Product Description',
+                  hintText: 'Product Description',
+                ),
+              ),
+            ),
+            Container(
+              padding: const EdgeInsets.all(10),
+              child: TextFormField(
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Please enter some text';
+                  }
+                  return null;
+                },
+                controller: quantityController,
+                decoration: const InputDecoration(
+
+                  border: OutlineInputBorder(),
+                  labelText: 'Product quantity',
+                  hintText: 'Product quantity',
+                ),
+              ),
+            ),
+
+            Padding(
+              padding: const EdgeInsets.all(12.0),
+              child: SizedBox(
+                width: double.maxFinite,
+                child: DropdownButtonFormField<String>(
                     decoration: InputDecoration(
-                        fillColor: Color(0xFF387B74),
-                        prefixIconColor:Color(0xFF387B74),
-                        prefixIcon: Icon(Icons.person),
-                        label: Text("Product name "),
-// hintText: "Enter your Username",
-                        border: OutlineInputBorder(
-                          borderSide: BorderSide(
-                            color:Color(0xFF387B74),
-                          ),
-                          borderRadius: BorderRadius.circular(20),
-                        ))),
-              ),
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: TextFormField(
-                    controller: descriptionController,
-                    validator: (value) {
-                      if (value == null || value.trim().isEmpty) {
-                        return 'This field is required';
-                      }
-
-// Return null if the entered password is valid
-                      return null;
-                    },
-                    keyboardType: TextInputType.text,
-                    decoration: InputDecoration(
-                      prefixIconColor: Color(0xFF387B74),
-                      prefixIcon: Icon(Icons.production_quantity_limits),
-                      border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(20),
-                          borderSide: BorderSide(color:Color(0xFF387B74))),
-                      label: Text("description"),
-//hintText: "Enter your Age",
-                    )),
-              ),
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: TextFormField(
-                    controller: priceController,
-                    validator: (value) {
-                      if (value == null || value.trim().isEmpty) {
-                        return 'This field is required';
-                      }
-
-// Return null if the entered password is valid
-                      return null;
-                    },
-                    keyboardType: TextInputType.number,
-                    decoration: InputDecoration(
-                      prefixIconColor: Color(0xFF387B74),
-                      prefixIcon: Icon(Icons.production_quantity_limits),
-                      border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(20),
-                          borderSide: BorderSide(color:Color(0xFF387B74))),
-                      label: Text("Price"),
-                    )),
-              ),
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: TextFormField(
-                    keyboardType: TextInputType.number,
-                    controller: quantityController,
-                    validator: (value) {
-                      if (value == null || value.trim().isEmpty) {
-                        return 'This field is required';
-                      }
-
-// Return null if the entered password is valid
-                      return null;
-                    },
-                    decoration: InputDecoration(
-                        prefixIconColor: Color(0xFF387B74),
-                        prefixIcon: const Icon(Icons.high_quality),
-                        label: const Text("quantity"),
-                        border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(20),
-                            borderSide: BorderSide(color:Color(0xFF387B74))))),
-              ),
-
-              Container(
-                child: imageFile == null
-                    ? Container(
-                  child: Column(
-                    children: <Widget>[
-                      ElevatedButton(
-                        onPressed: () {
-                          _getFromGallery();
-                          _showChoiceDialog(context);
-                        },
-                        child: Text("Upload Image"),
-                      ),
-                      Container(
-                        height: 40.0,
-                      ),
-                    ],
-                  ),
-                )
-                    : Row(
-                  children: [
-                    Container(
-                      alignment: Alignment.centerLeft,
-                      child: Image.file(
-                        imageFile!,
-                        width: 100,
-                        height: 100,
-//  fit: BoxFit.cover,
-                      ),
+                      disabledBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(5)) ,
+                      enabledBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(5)),
                     ),
+                    hint: Text('Categories'),
+                    value: dropdownvalue,
+                    items: _loaddata
+                        .map((type) => DropdownMenuItem<String>(
+                      value: type['id'].toString(),
+                      child: Text(
+                        type['categoryname'].toString(),
+                        style: TextStyle(color:  Color(0xFF387B74)),
+                      ),
+                    ))
+                        .toList(),
+                    onChanged: (type) {
+                      setState(() {
+                        dropdownvalue = type!;
+                      });
+                    }),
+              ),
+            ),
+            SizedBox(height: 20,),
+            Container(
+
+              child: imageFile == null
+                  ? Container(
+                child: Column(
+                  children: <Widget>[
                     ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        primary: Color(0xFF387B74),
+                      ),
                       onPressed: () {
-//    _getFromGallery();
+                        //    _getFromGallery();
                         _showChoiceDialog(context);
                       },
                       child: Text("Upload Image"),
                     ),
+                    Container(
+                      height: 40.0,
+                    ),
+
                   ],
                 ),
+              ): Row(
+                children: [
+                  Container(
+                    alignment: Alignment.centerLeft,
+                    child: Image.file(
+                      imageFile!,
+                      width: 100,
+                      height: 100,
+                      //  fit: BoxFit.cover,
+                    ),
+                  ), ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      primary: Color(0xFF387B74),
+                    ),
+                    onPressed: () {
+                      //    _getFromGallery();
+                      _showChoiceDialog(context);
+                    },
+                    child: Text("Upload Image"),
+                  ),
+                ],
               ),
-              const SizedBox(
-                height: 20,
-              ),
-              ElevatedButton(
-                onPressed: () {
-                  submitForm(
-                      productnameController.text,
-                      descriptionController.text,
-                      priceController.text,
-                      quantityController.text,
-
-                      _filename);
-                },
+            ),
+            SizedBox(height: 88,),
+            SizedBox(
+              height: 60,
+              width: 350,
+              child: ElevatedButton(
                 style: ElevatedButton.styleFrom(
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(29.0)),
-                    primary: Color(0xFF387B74),
-                    fixedSize: Size(350, 57)),
-                child: const Text("Add Product",
-                    style: TextStyle(fontSize: 18, color: Colors.white)),
+                  primary:  Color(0xFF387B74),
+                ),
+                child: const Text('Submit',style: TextStyle(fontSize: 25),),
+                onPressed: () {
+                  submitForm(productnameController.text,descriptionController.text,priceController.text,quantityController.text,dropdownvalue);
+                },
               ),
-            ],
-          ),
+            ),
+
+          ],
         ),
       ),
+
     );
   }
+
 }
