@@ -30,7 +30,7 @@ class _ItemCardState extends State<ItemCard> {
           children: [
             Container(
               width: 140.0,
-              child: Image.asset(widget.model.image[0]),
+              child: Image.asset(widget.model.images[0]),
             ),
             Container(
               width: 180.0,

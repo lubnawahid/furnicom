@@ -202,13 +202,7 @@ class _AddProductState extends State<AddProduct> {
       // contentType: MediaType('image', 'jpeg'), // Replace with your desired image type
     );
     request.fields.addAll({
-      "productname":"chair",
-      "description":"wooden chair",
-      "price":"5000",
-      "quantity" : "1",
-      "category": "1",
-      "shopowneregister": "7"
-    });
+         });
     request.files.add(multipartFile);
     print(_filename);
 

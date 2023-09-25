@@ -3,14 +3,14 @@ class Model {
   final String price;
   final String description;
   final String category;
-  final List image;
+  final String images;
 
   Model({
     required this.name,
     required this.price,
     required this.description,
     required this.category,
-    required this.image,
+    required this.images,
   });
 }
 

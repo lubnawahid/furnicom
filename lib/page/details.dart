@@ -79,7 +79,7 @@ class _DetailsPageState extends State<DetailsPage> {
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        for (int i = 0; i < widget.model.image.length; i++)
+                        for (int i = 0; i < widget.model.images.length; i++)
                           InkWell(
                             onTap: () {
                               setState(() {
@@ -90,7 +90,7 @@ class _DetailsPageState extends State<DetailsPage> {
                               height: 40,
                               width: 40,
                               margin: EdgeInsets.symmetric(vertical: 5.0),
-                              child: Image.asset(widget.model.image[i]),
+                              child: Image.asset(widget.model.images[i]),
                             ),
                           )
                       ],
@@ -102,7 +102,7 @@ class _DetailsPageState extends State<DetailsPage> {
                   child: Align(
                     alignment: Alignment.centerRight,
                     child: Image.asset(
-                      widget.model.image[selectIndex],
+                      widget.model.images[selectIndex],
                       fit: BoxFit.cover,
                       width: height / 2.8,
                     ),

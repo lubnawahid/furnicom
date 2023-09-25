@@ -19,8 +19,8 @@ class _SItemCardState extends State<SItemCard> {
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () {
-        Navigator.push(context,
-            MaterialPageRoute(builder: (builder) => SPDetailsPage(model: widget.model)));
+       // Navigator.push(context,
+           // MaterialPageRoute(builder: (builder) => SPDetailsPage()));
       },
       child: Container(
         height: 140.0,
@@ -31,7 +31,7 @@ class _SItemCardState extends State<SItemCard> {
           children: [
             Container(
               width: 140.0,
-              child: Image.asset(widget.model.image[0]),
+              child: Image.asset(widget.model.images),
             ),
             Container(
               width: 180.0,
@@ -39,18 +39,18 @@ class _SItemCardState extends State<SItemCard> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    widget.model.name,
+                    'productname',
                     style: itemCardHeading,
                   ),
                   SpaceVH(height: 10.0),
                   Text(
-                    widget.model.description,
+                    'description',
                     maxLines: 3,
                     style: itemCardDes,
                   ),
                   SpaceVH(height: 20.0),
                   Text(
-                    widget.model.price,
+                    'price',
                     style: itemCardPrice,
                   )
                 ],

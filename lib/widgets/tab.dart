@@ -19,10 +19,11 @@ class TabBarButton extends StatefulWidget {
 
 class _TabBarButtonState extends State<TabBarButton> {
   List _loaddata=[];
-  late int id =0;
-  _fetchProductData() async {
+  int id = 0;
+ // late int id;
+  _fetchData() async {
     var res = await Api()
-        .getData('/api/product_all_view');
+        .getData('/api/product_all_view' +id.toString());
     if (res.statusCode == 200) {
       var items = json.decode(res.body)['data'];
       print(items);
@@ -44,9 +45,11 @@ class _TabBarButtonState extends State<TabBarButton> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    _fetchProductData();
+    _fetchData();
   }
-  //nt id = 0;
+
+
+
   @override
   Widget build(BuildContext context) {
     return Row(
@@ -58,6 +61,7 @@ class _TabBarButtonState extends State<TabBarButton> {
             onTap: () {
               setState(() {
                 id = tabBarMenu[i].id;
+_fetchData();
               });
             },
             child: Container(
