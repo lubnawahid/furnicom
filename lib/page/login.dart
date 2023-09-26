@@ -83,7 +83,7 @@ class _LoginState extends State<Login> {
       else if (sp == role &&
           ststatus == status
       ) {
-        Navigator.of(context).push(MaterialPageRoute(builder: (context) => SHomePage()));
+        Navigator.of(context).push(MaterialPageRoute(builder: (context) => Shopowner()));
 
 
       }

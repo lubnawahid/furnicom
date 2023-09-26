@@ -15,6 +15,7 @@ import '../services/api.dart';
 import '../widgets/custom.dart';
 import '../widgets/item.dart';
 import '../widgets/tab.dart';
+import 'categorydetails.dart';
 
 class HomePage extends StatefulWidget {
   @override
@@ -27,21 +28,21 @@ class _HomePageState extends State<HomePage> {
   late int id;
   _fetchData() async {
     var res = await Api()
-        .getData('/api/products_all_view');
+        .getData('/api/category_all_view');
     if (res.statusCode == 200) {
       var items = json.decode(res.body)['data'];
       print(items);
-      setState(() {
+
         _loaddata = items;
-      });
+
     } else {
-      setState(() {
+
         _loaddata = [];
         Fluttertoast.showToast(
           msg: "Currently there is no data available",
           backgroundColor: Colors.grey,
-        );
-      }
+
+
       );
     }
   }
@@ -55,6 +56,13 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        /*leading: IconButton(onPressed: () {
+
+          }, icon: Icon(Icons.menu)),*/
+        title: Text("HomePage"),
+        centerTitle: true,
+      ),
       backgroundColor: white,
       body: Padding(
         padding: EdgeInsets.symmetric(horizontal: 20.0),
@@ -62,7 +70,7 @@ class _HomePageState extends State<HomePage> {
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            CustomAppBar(),
+
             Text(
               'Furniture in\nunique style',
               style: heading,
@@ -73,18 +81,60 @@ class _HomePageState extends State<HomePage> {
               style: subHeading,
             ),
             SpaceVH(height: 20),
-            Container(
-              height: 70.0,
-              child: TabBarButton(),
-            ),
+
             Expanded(
-              child: ListView.builder(
-                  physics: BouncingScrollPhysics(),
-                  itemCount: _loaddata.length,
-                  itemBuilder: (builder, index) {
-                    final model = _loaddata[index];
-                    return ItemCard(model: model);
-                  }),
+              child: FutureBuilder(
+                future: _fetchData(),
+                builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
+
+
+                  if (snapshot.hasError) {
+                    return Text('Error: ${snapshot.error}');
+                  } else {
+                    return GridView.builder(
+                      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                        crossAxisCount: 3,
+                        childAspectRatio: 2 / 2,
+                        crossAxisSpacing: 20,
+                        mainAxisSpacing: 20,
+                      ),
+                      itemCount: _loaddata.length,
+                      itemBuilder: (BuildContext ctx, index) {
+                        id = _loaddata[index]['id'];
+                        print("res$id");
+                        return InkWell(
+                          onTap: () {
+                            Navigator.push(context, MaterialPageRoute(builder: (context) => CategoryDetails()),
+                            );
+                          },
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              Image.network(
+                                Api().url + _loaddata[index]['images'],
+
+                                fit: BoxFit.cover,
+                                height: 90, // Adjust the height as needed
+                              ),
+                              SizedBox(height: 8),
+                              Text(
+                                _loaddata[index]['categoryname'],
+                                style: TextStyle(
+                                  fontSize: 13,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ],
+                          ),
+                        );
+                      },
+                    );
+
+
+
+                  }
+                },
+              ),
             ),
           ],
         ),
