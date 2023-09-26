@@ -23,7 +23,7 @@ class _TabBarButtonState extends State<TabBarButton> {
  // late int id;
   _fetchData() async {
     var res = await Api()
-        .getData('/api/product_all_view' +id.toString());
+        .getData('/api/category_all_view');
     if (res.statusCode == 200) {
       var items = json.decode(res.body)['data'];
       print(items);
@@ -61,9 +61,10 @@ class _TabBarButtonState extends State<TabBarButton> {
             onTap: () {
               setState(() {
                 id = tabBarMenu[i].id;
-_fetchData();
+
               });
             },
+
             child: Container(
               height: 40.0,
               padding: EdgeInsets.symmetric(horizontal: 20.0),
@@ -77,9 +78,72 @@ _fetchData();
                   style: id == i ? tabButtonS : tabButtonU,
                 ),
               ),
+
             ),
+
+
           ),
+    Expanded(
+    child: FutureBuilder(
+    future: _fetchData(),
+    builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
+
+
+    if (snapshot.hasError) {
+    return Text('Error: ${snapshot.error}');
+    } else {
+    return GridView.builder(
+    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+    crossAxisCount: 3,
+    childAspectRatio: 2 / 2,
+    crossAxisSpacing: 20,
+    mainAxisSpacing: 20,
+    ),
+
+      itemCount: _loaddata.length,
+      itemBuilder: (BuildContext ctx, index) {
+        id = _loaddata[index]['id'];
+        print("res$id");
+        return InkWell(
+          // onTap: () {
+          //   Navigator.push(
+          //     context,
+          //     MaterialPageRoute(builder: (context) => CategoryServices()),
+          //   );
+          // },
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Image.network(
+                Api().url + _loaddata[index]['images'],
+
+                fit: BoxFit.cover,
+                height: 45, // Adjust the height as needed
+              ),
+              SizedBox(height: 8),
+              Text(
+                _loaddata[index]['categoryname'],
+                style: TextStyle(
+                  fontSize: 8,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ],
+          ),
+        );
+      },
+    );
+
+
+
+    }
+    },
+    ),
+    ),
       ],
     );
   }
 }
+
+
+

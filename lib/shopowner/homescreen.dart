@@ -26,34 +26,34 @@ class SHomePage extends StatefulWidget {
 }
 
 class _SHomePageState extends State<SHomePage> {
-  List _loaddata=[];
-  late int id;
-  _fetchproductData() async {
-    var res = await Api()
-        .getData('/api/product_all_view');
-    if (res.statusCode == 200) {
-      var items = json.decode(res.body)['data'];
-      print(items);
-      setState(() {
-        _loaddata = items;
-      });
-    } else {
-      setState(() {
-        _loaddata = [];
-        Fluttertoast.showToast(
-          msg: "Currently there is no data available",
-          backgroundColor: Colors.grey,
-        );
-      }
-      );
-    }
-  }
-  @override
-  void initState() {
-    // TODO: implement initState
-    super.initState();
-    _fetchproductData();
-  }
+  // List _loaddata=[];
+  // late int id;
+  // _fetchproductData() async {
+  //   var res = await Api()
+  //       .getData('/api/product_all_view');
+  //   if (res.statusCode == 200) {
+  //     var items = json.decode(res.body)['data'];
+  //     print(items);
+  //     setState(() {
+  //       _loaddata = items;
+  //     });
+  //   } else {
+  //     setState(() {
+  //       _loaddata = [];
+  //       Fluttertoast.showToast(
+  //         msg: "Currently there is no data available",
+  //         backgroundColor: Colors.grey,
+  //       );
+  //     }
+  //     );
+  //   }
+  // }
+  // @override
+  // void initState() {
+  //   // TODO: implement initState
+  //   super.initState();
+  //   _fetchproductData();
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -82,24 +82,24 @@ class _SHomePageState extends State<SHomePage> {
 
               ),
             ),
-            Expanded(
-              child: ListView.builder(
-                  physics: BouncingScrollPhysics(),
-                  itemCount: _loaddata.length,
-                  itemBuilder: (builder, index) {
-                    id = _loaddata[index]['id'];
-
-                    return Card(
-
-                      child:ListTile(
-                        leading: Image.network(
-                          Api().url + _loaddata[index]['images'],
-
-                        ),
-                      )
-                    );
-                  }),
-            ),
+            // Expanded(
+            //   child: ListView.builder(
+            //       physics: BouncingScrollPhysics(),
+            //       itemCount: _loaddata.length,
+            //       itemBuilder: (builder, index) {
+            //         id = _loaddata[index]['id'];
+            //
+            //         return Card(
+            //
+            //           child:ListTile(
+            //             leading: Image.network(
+            //               Api().url + _loaddata[index]['images'],
+            //
+            //             ),
+            //           )
+            //         );
+            //       }),
+            // ),
           ],
         ),
       ),

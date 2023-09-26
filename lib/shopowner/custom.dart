@@ -24,31 +24,7 @@ class _SCustomAppBarState extends State<SCustomAppBar> {
         children: [
           Icon(Icons.menu),
 
-          // InkWell(
-          //   onTap: () {
-          //     Navigator.push(context, MaterialPageRoute(builder: (context)=>Cart()));
-          //   },
-          //   splashColor: white,
-          //   child: Container(
-          //     height: 65.0,
-          //     width: 50.0,
-          //     decoration: BoxDecoration(
-          //       color: green,
-          //       borderRadius: BorderRadius.only(
-          //         topLeft: Radius.circular(20.0),
-          //         topRight: Radius.circular(10.0),
-          //         bottomLeft: Radius.circular(20.0),
-          //         bottomRight: Radius.circular(50.0),
-          //       ),
-          //     ),
-          //     // child: Icon(
-          //     //   Icons.shopping_cart_outlined,
-          //     //   color: white,
-          //     //
-          //     // ),
-          //
-          //   ),
-          // )
+
         ],
       ),
 
