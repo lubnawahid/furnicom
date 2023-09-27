@@ -8,8 +8,8 @@ import '../core/textstyle.dart';
 import '../model/models.dart';
 
 class DetailsPage extends StatefulWidget {
-  final Model model;
-  const DetailsPage({Key? key, required this.model}) : super(key: key);
+final int id;
+  const DetailsPage({required this.id});
 
   @override
   _DetailsPageState createState() => _DetailsPageState();
@@ -36,8 +36,8 @@ class _DetailsPageState extends State<DetailsPage> {
         ),
         centerTitle: true,
         title: Text(
-          widget.model.category,
-          style: itemCardHeading,
+        ''
+         // style: itemCardHeading,
         ),
         actions: [
           IconButton(
@@ -79,18 +79,18 @@ class _DetailsPageState extends State<DetailsPage> {
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        for (int i = 0; i < widget.model.images.length; i++)
+
                           InkWell(
                             onTap: () {
                               setState(() {
-                                selectIndex = i;
+
                               });
                             },
                             child: Container(
                               height: 40,
                               width: 40,
                               margin: EdgeInsets.symmetric(vertical: 5.0),
-                              child: Image.asset(widget.model.images[i]),
+                              //child: Image.asset(),
                             ),
                           )
                       ],
@@ -101,11 +101,11 @@ class _DetailsPageState extends State<DetailsPage> {
                   padding: EdgeInsets.only(right: 10.0),
                   child: Align(
                     alignment: Alignment.centerRight,
-                    child: Image.asset(
-                      widget.model.images[selectIndex],
-                      fit: BoxFit.cover,
-                      width: height / 2.8,
-                    ),
+                    // child: Image.asset(
+                    //
+                    //   fit: BoxFit.cover,
+                    //   width: height / 2.8,
+                    // ),
                   ),
                 )
               ],
@@ -119,8 +119,8 @@ class _DetailsPageState extends State<DetailsPage> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
-                      widget.model.name,
-                      style: heading.copyWith(fontSize: 28.0),
+                     ''
+                     // style: heading.copyWith(fontSize: 28.0),
                     ),
                     Container(
                       height: 40,
@@ -172,8 +172,8 @@ class _DetailsPageState extends State<DetailsPage> {
                 ),
                 SpaceVH(height: 20.0),
                 Text(
-                  widget.model.description,
-                  style: itemCardDes,
+                ''
+                  //style: itemCardDes,
                 ),
                 SpaceVH(height: 20.0),
                 Row(
@@ -186,8 +186,7 @@ class _DetailsPageState extends State<DetailsPage> {
                           style: subHeading,
                         ),
                         TextSpan(
-                          text: widget.model.price,
-                          style: itemCardHeading,
+
                         ),
                       ]),
                     ),

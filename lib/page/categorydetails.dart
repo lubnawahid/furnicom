@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:furnicom/page/details.dart';
 
 import '../services/api.dart';
 
@@ -20,7 +21,7 @@ class _CategoryDetailsState extends State<CategoryDetails> {
 
   _fetchCategoryData() async {
     var res = await Api()
-        .getData('/api/category_product_view');
+        .getData('/api/category_product_view' +id.toString());
     if (res.statusCode == 200) {
       var items = json.decode(res.body)['data'];
       print(items);
@@ -70,6 +71,15 @@ class _CategoryDetailsState extends State<CategoryDetails> {
                   Text("Rs:" + _loaddata[index]['price'],
                       style: TextStyle(fontSize: 15))
                 ],
+              ),
+              trailing: ElevatedButton(
+                onPressed: (){
+                  Navigator.of(context).push(
+                    MaterialPageRoute(builder:(context) => DetailsPage(id:id),
+                    ),
+                  );
+                },
+                child: Text('select'),
               ),
             ),
           );

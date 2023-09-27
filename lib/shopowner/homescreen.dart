@@ -2,10 +2,12 @@
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:furnicom/shopowner/productallview.dart';
 
 import '../core/color.dart';
 import '../core/space.dart';
 import '../page/login.dart';
+import 'addprdct.dart';
 
 class Shopowner extends StatefulWidget {
   const Shopowner({Key? key}) : super(key: key);
@@ -47,7 +49,7 @@ class _ShopownerState extends State<Shopowner> {
                   ),
                   SizedBox(height: 50,),
                Container(
-                 height: 400,
+                 height: 500,
 
                child:   GridView.count(
                     shrinkWrap: true,
@@ -74,7 +76,7 @@ class _ShopownerState extends State<Shopowner> {
                           color: Colors.transparent,
                           child: InkWell(
                             onTap: () {
-                            //  Navigator.push(context, MaterialPageRoute(builder: (context)=>managepackages()));
+                             Navigator.push(context, MaterialPageRoute(builder: (context)=>AddProduct()));
 
                             },
                             child: Column(
@@ -93,6 +95,41 @@ class _ShopownerState extends State<Shopowner> {
                         ),
                       ),
 
+                      Container(
+                        padding: EdgeInsets.all(20),
+                        decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(15),
+                            boxShadow: [
+                              BoxShadow(
+                                  offset: Offset(0,17),
+                                  blurRadius: 17,
+                                  spreadRadius: -23
+                              )
+                            ]
+                        ),
+                        child: Material(
+                          color: Colors.transparent,
+                          child: InkWell(
+                            onTap: () {
+                              Navigator.push(context, MaterialPageRoute(builder: (context)=>Aproduct()));
+
+                            },
+                            child: Column(
+                              children: [
+                                new Image.asset('images/products.jpg',
+                                  height: 100,
+                                  width: 150,
+                                  alignment: Alignment.center,
+                                ),
+                                SizedBox(height: 6,),
+                                Text('Products',textAlign: TextAlign.center,style: TextStyle(fontSize: 15,fontWeight: FontWeight.bold),)
+
+                              ],
+                            ),
+                          ),
+                        ),
+                      ),
 
 
 
@@ -123,20 +160,55 @@ class _ShopownerState extends State<Shopowner> {
                             child: Column(
                               children: [
 
-                                new Image.asset('images/feedback.png',
+                                new Image.asset('images/order.jpg',
                                   height: 90,
                                   width: 150,
                                   alignment: Alignment.center,
                                 ),
-                                SizedBox(height: 10,),
-                                Text('View Feedbacks',textAlign: TextAlign.center,style: TextStyle(fontSize: 18,fontWeight: FontWeight.bold),)
+                                SizedBox(height: 6,),
+                                Text('View Orders',textAlign: TextAlign.center,style: TextStyle(fontSize: 18,fontWeight: FontWeight.bold),)
 
                               ],
                             ),
                           ),
                         ),
                       ),
+                      Container(
+                        padding: EdgeInsets.all(20),
+                        decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(15),
+                            boxShadow: [
+                              BoxShadow(
+                                  offset: Offset(0,17),
+                                  blurRadius: 17,
+                                  spreadRadius: -23
+                              )
+                            ]
+                        ),
+                        child: Material(
+                          color: Colors.transparent,
+                          child: InkWell(
+                            onTap: () {
+                              //  Navigator.push(context, MaterialPageRoute(builder: (context)=>viewfeedback()));
 
+                            },
+                            child: Column(
+                              children: [
+
+                                new Image.asset('images/feedback.png',
+                                  height: 90,
+                                  width: 150,
+                                  alignment: Alignment.center,
+                                ),
+                                SizedBox(height: 10,),
+                                Text('Status Updation',textAlign: TextAlign.center,style: TextStyle(fontSize: 18,fontWeight: FontWeight.bold),)
+
+                              ],
+                            ),
+                          ),
+                        ),
+                      ),
                    ],
                   ),
                ),

@@ -1,30 +1,28 @@
-
-
 import 'dart:convert';
+import 'dart:io';
 
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:furnicom/shopowner/homescreen.dart';
 import 'package:furnicom/shopowner/productallview.dart';
+
 import 'package:image_picker/image_picker.dart';
 import 'package:path/path.dart';
-import 'dart:io';
+
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
+
 import '../services/api.dart';
 
 
 class AddProduct extends StatefulWidget {
-  AddProduct({Key? key}) : super(key: key);
+  const AddProduct({Key? key}) : super(key: key);
 
   @override
-  State<AddProduct> createState() => _AddProductState();
+  _AddProductState createState() => _AddProductState();
 }
 
 class _AddProductState extends State<AddProduct> {
   late SharedPreferences prefs;
-  late int shopowner_id;
   List _loaddata=[];
 
   _fetchData() async {
@@ -54,50 +52,13 @@ class _AddProductState extends State<AddProduct> {
     _fetchData();
   }
   bool _isLoading=false;
-  TextEditingController productnameController=TextEditingController();
-  TextEditingController descriptionController=TextEditingController();
+  TextEditingController nameController=TextEditingController();
   TextEditingController quantityController=TextEditingController();
-  TextEditingController priceController=TextEditingController();
-
+  TextEditingController descController=TextEditingController();
+  TextEditingController amountController=TextEditingController();
 
   final _formKey = GlobalKey<FormState>();
-  // void Addproduct()async {
-  //   setState(() {
-  //     _isLoading = true;
-  //   });
-  //
-  //
-  //   var data = {
-  //     "name": nameController.text.trim(),
-  //     "description": descController.text.trim(),
-  //     "amount": amountController.text.trim(),
-  //     "dimension": dimensionController.text.trim(),
-  //     "colour": colourController.text.trim(),
-  //     // "category": dropdownvalue,
-  //     "image":imageFile,
-  //   };
-  //   print("Product data${data}");
-  //   var res = await Api().authData(data, '/api/add_product');
-  //   var body = json.decode(res.body);
-  //   print('res${res}');
-  //   if (body['success'] == true) {
-  //     Fluttertoast.showToast(
-  //       msg: body['message'].toString(),
-  //       backgroundColor: Colors.grey,
-  //     );
-  //
-  //     Navigator.push(
-  //         context as BuildContext, MaterialPageRoute(builder: (context) => Aproduct()));
-  //   }
-  //   else {
-  //     Fluttertoast.showToast(
-  //       msg: body['message'].toString(),
-  //       backgroundColor: Colors.grey,
-  //     );
-  //   }
-  // }
 
-  // Initial Selected Value
   var dropdownvalue ;
 
 
@@ -177,44 +138,79 @@ class _AddProductState extends State<AddProduct> {
       });
     }
   }
-  Future<void> submitForm(String productname, String description, String price, String quantity,String category) async {
-    var uri = Uri.parse(Api().url+'/api/products'); // Replace with your API endpoint
+  Future<void> submitForm(
+      {String ? productname,
+        String ?description,
+        String? quantity,
+        String? price,
+        String? images,
+        String? category}) async {
+    var uri = Uri.parse(Api().url+'/api/products');
 
     prefs = await SharedPreferences.getInstance();
-    shopowner_id = (prefs.getInt('user_id') ?? 0 );
     var request = http.MultipartRequest('POST', uri);
+    Map<String,String> headers={
+
+      "Content-type": "multipart/form-data"
+    };
+    request.files.add(await
+    http.MultipartFile.fromPath(
+        'images',imageFile!.path
 
 
-    request.fields['productname'] = productname;
-    request.fields['description'] = description;
-    request.fields['price'] = price;
-    request.fields['quantity'] = quantity;
-    request.fields['category'] = category;
-    request.fields['shopownerregister'] =shopowner_id.toString();
-
-    print(request.fields);
-    final imageStream = http.ByteStream(imageFile!.openRead());
-    final imageLength = await imageFile!.length();
-
-    final multipartFile = await http.MultipartFile(
-      'images',imageStream,imageLength,
-      filename: _filename ,
-      // contentType: MediaType('image', 'jpeg'), // Replace with your desired image type
+    ),
     );
-    request.fields.addAll({
-         });
-    request.files.add(multipartFile);
-    print(_filename);
+    request.headers.addAll(headers);
+    print('res');
 
-    final response = await request.send();
-     print('response');
-     print(response.statusCode);
-    if (response.statusCode == 201) {
+
+    request.fields.addAll({
+      "productname": productname!,
+      "description": description!,
+      "price": price!,
+      "category": category!,
+      "quantity" :quantity!,
+
+    });
+
+
+    //headers:{ "Content-Type":"multipart/form-data" } ,
+// final imageFile=await _imageFile!.readAsBytes();
+// final imageUpload=http.MultipartFile.fromBytes('image', imageFile,filename: '')
+
+    // request.fields['servicename'] = name;
+    // request.fields['description'] = description;
+    // request.fields['price'] = amount;
+    // request.fields['category'] = categ;
+    //
+    //
+    //
+    // print(request.fields);
+    // final imageStream = http.ByteStream(imageFile!.openRead());
+    // final imageLength = await imageFile!.length();
+    //
+    // final multipartFile =  http.MultipartFile(
+    //   'images',imageStream,imageLength,
+    //   filename: _filename ,
+    //
+    // );
+    // request.addAll(multipartFile);
+    // print(_filename);
+    //
+    // final response = await request.send();
+    print("request: "+request.toString());
+    var res = await request.send();
+
+    print("This is response:"+res.toString());
+
+
+    // var response;
+    if (res.statusCode == 201) {
       print('Form submitted successfully');
       Navigator.push(
           this.context, MaterialPageRoute(builder: (context) => Aproduct()));
     } else {
-      print('Error submitting form. Status code: ${response.statusCode}');
+      print('Error submitting form. Status code: ${res.statusCode}');
     }
   }
 
@@ -228,7 +224,7 @@ class _AddProductState extends State<AddProduct> {
             gradient: LinearGradient(
               begin: Alignment.topLeft,
               end: Alignment.bottomRight,
-              colors: [Colors.blue,  Color(0xFF387B74)],
+              colors: [Colors.blue, Colors.purple],
             ),
           ),
         ),
@@ -252,12 +248,12 @@ class _AddProductState extends State<AddProduct> {
                   }
                   return null;
                 },
-                controller: productnameController,
+                controller: nameController,
                 decoration: const InputDecoration(
 
                   border: OutlineInputBorder(),
                   labelText: 'Product Name',
-                  hintText: 'Product Name',
+
                 ),
               ),
             ),
@@ -271,12 +267,12 @@ class _AddProductState extends State<AddProduct> {
                   }
                   return null;
                 },
-                controller: priceController,
+                controller: amountController,
                 decoration: const InputDecoration(
 
                   border: OutlineInputBorder(),
                   labelText: 'Product Price',
-                  hintText: 'Product Price',
+
                 ),
               ),
             ),
@@ -289,12 +285,12 @@ class _AddProductState extends State<AddProduct> {
                   }
                   return null;
                 },
-                controller: descriptionController,
+                controller: descController,
                 decoration: const InputDecoration(
 
                   border: OutlineInputBorder(),
-                  labelText: 'Product Description',
-                  hintText: 'Product Description',
+                  labelText: ' Description',
+
                 ),
               ),
             ),
@@ -311,12 +307,11 @@ class _AddProductState extends State<AddProduct> {
                 decoration: const InputDecoration(
 
                   border: OutlineInputBorder(),
-                  labelText: 'Product quantity',
-                  hintText: 'Product quantity',
+                  labelText: ' quantity',
+
                 ),
               ),
             ),
-
             Padding(
               padding: const EdgeInsets.all(12.0),
               child: SizedBox(
@@ -335,7 +330,7 @@ class _AddProductState extends State<AddProduct> {
                       value: type['id'].toString(),
                       child: Text(
                         type['categoryname'].toString(),
-                        style: TextStyle(color:  Color(0xFF387B74)),
+                        style: TextStyle(color: Colors.black),
                       ),
                     ))
                         .toList(),
@@ -355,7 +350,7 @@ class _AddProductState extends State<AddProduct> {
                   children: <Widget>[
                     ElevatedButton(
                       style: ElevatedButton.styleFrom(
-                        primary: Color(0xFF387B74),
+                        primary: Colors.deepPurple,
                       ),
                       onPressed: () {
                         //    _getFromGallery();
@@ -381,7 +376,7 @@ class _AddProductState extends State<AddProduct> {
                     ),
                   ), ElevatedButton(
                     style: ElevatedButton.styleFrom(
-                      primary: Color(0xFF387B74),
+                      primary: Colors.redAccent,
                     ),
                     onPressed: () {
                       //    _getFromGallery();
@@ -392,17 +387,19 @@ class _AddProductState extends State<AddProduct> {
                 ],
               ),
             ),
-            SizedBox(height: 88,),
+            SizedBox(height: 50,),
             SizedBox(
-              height: 60,
-              width: 350,
+              height: 40,
+              width: 200,
               child: ElevatedButton(
                 style: ElevatedButton.styleFrom(
-                  primary:  Color(0xFF387B74),
+                  primary: Colors.redAccent,
                 ),
-                child: const Text('Submit',style: TextStyle(fontSize: 25),),
+                child: const Text('Submit',style: TextStyle(fontSize: 18),),
                 onPressed: () {
-                  submitForm(productnameController.text,descriptionController.text,priceController.text,quantityController.text,dropdownvalue);
+
+                  submitForm(
+                      productname: nameController.text,description: descController.text,quantity:quantityController.text,price: amountController.text,images: _filename,category: dropdownvalue);
                 },
               ),
             ),

@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:furnicom/page/cart.dart';
+import 'package:furnicom/page/login.dart';
 
 import '../core/color.dart';
 
@@ -14,15 +15,23 @@ class CustomAppBar extends StatefulWidget {
 class _CustomAppBarState extends State<CustomAppBar> {
   @override
   Widget build(BuildContext context) {
+
     return Container(
+
       color: white,
       margin: EdgeInsets.only(top: 50.0),
       height: 80.0,
       child: Row(
+
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Icon(Icons.menu),
+          InkWell(
+          onTap: () {
+    Navigator.push(context, MaterialPageRoute(builder: (context)=>Login()));
+    },
+          child:Icon(Icons.menu),
+          ),
 
           InkWell(
             onTap: () {

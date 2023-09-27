@@ -18,7 +18,7 @@ class _AproductState extends State<Aproduct> {
 
   _fetchData() async {
     var res = await Api()
-        .getData('/api/product');
+        .getData('/api/product_all_view');
     if (res.statusCode == 200) {
       var items = json.decode(res.body)['data'];
       print(items);

@@ -56,13 +56,7 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        /*leading: IconButton(onPressed: () {
 
-          }, icon: Icon(Icons.menu)),*/
-        title: Text("HomePage"),
-        centerTitle: true,
-      ),
       backgroundColor: white,
       body: Padding(
         padding: EdgeInsets.symmetric(horizontal: 20.0),
@@ -70,7 +64,7 @@ class _HomePageState extends State<HomePage> {
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-
+CustomAppBar(),
             Text(
               'Furniture in\nunique style',
               style: heading,
@@ -80,7 +74,7 @@ class _HomePageState extends State<HomePage> {
               'We have wide rang of Furniture',
               style: subHeading,
             ),
-            SpaceVH(height: 20),
+            SpaceVH(height: 110),
 
             Expanded(
               child: FutureBuilder(
@@ -101,7 +95,7 @@ class _HomePageState extends State<HomePage> {
                       itemCount: _loaddata.length,
                       itemBuilder: (BuildContext ctx, index) {
                         id = _loaddata[index]['id'];
-                        print("res$id");
+                        // print("res$id");
                         return InkWell(
                           onTap: () {
                             Navigator.push(context, MaterialPageRoute(builder: (context) => CategoryDetails()),
