@@ -53,7 +53,7 @@ class _AddProductState extends State<AddProduct> {
   }
   bool _isLoading=false;
   TextEditingController nameController=TextEditingController();
-  TextEditingController quantityController=TextEditingController();
+  TextEditingController quantController=TextEditingController();
   TextEditingController descController=TextEditingController();
   TextEditingController amountController=TextEditingController();
 
@@ -139,13 +139,13 @@ class _AddProductState extends State<AddProduct> {
     }
   }
   Future<void> submitForm(
-      {String ? productname,
-        String ?description,
-        String? quantity,
-        String? price,
-        String? images,
-        String? category}) async {
-    var uri = Uri.parse(Api().url+'/api/products');
+      {String ? name,
+        String? desc,
+        String? quant,
+        String? amount,
+        String? image,
+        String? categ}) async {
+    var uri = Uri.parse(Api().url+ '/api/add_products');
 
     prefs = await SharedPreferences.getInstance();
     var request = http.MultipartRequest('POST', uri);
@@ -165,11 +165,12 @@ class _AddProductState extends State<AddProduct> {
 
 
     request.fields.addAll({
-      "productname": productname!,
-      "description": description!,
-      "price": price!,
-      "category": category!,
-      "quantity" :quantity!,
+      'productname': name!,
+      'description': desc!,
+      'price': amount!,
+      'category': categ!,
+      'quantity' :quant!,
+
 
     });
 
@@ -224,7 +225,7 @@ class _AddProductState extends State<AddProduct> {
             gradient: LinearGradient(
               begin: Alignment.topLeft,
               end: Alignment.bottomRight,
-              colors: [Colors.blue, Colors.purple],
+              colors: [Colors.blue, Color(0xFF387B74)],
             ),
           ),
         ),
@@ -267,6 +268,7 @@ class _AddProductState extends State<AddProduct> {
                   }
                   return null;
                 },
+                keyboardType: TextInputType.number,
                 controller: amountController,
                 decoration: const InputDecoration(
 
@@ -303,7 +305,7 @@ class _AddProductState extends State<AddProduct> {
                   }
                   return null;
                 },
-                controller: quantityController,
+                controller: quantController,
                 decoration: const InputDecoration(
 
                   border: OutlineInputBorder(),
@@ -350,7 +352,7 @@ class _AddProductState extends State<AddProduct> {
                   children: <Widget>[
                     ElevatedButton(
                       style: ElevatedButton.styleFrom(
-                        primary: Colors.deepPurple,
+                        primary: Color(0xFF387B74),
                       ),
                       onPressed: () {
                         //    _getFromGallery();
@@ -376,7 +378,7 @@ class _AddProductState extends State<AddProduct> {
                     ),
                   ), ElevatedButton(
                     style: ElevatedButton.styleFrom(
-                      primary: Colors.redAccent,
+                      primary: Color(0xFF387B74),
                     ),
                     onPressed: () {
                       //    _getFromGallery();
@@ -393,13 +395,13 @@ class _AddProductState extends State<AddProduct> {
               width: 200,
               child: ElevatedButton(
                 style: ElevatedButton.styleFrom(
-                  primary: Colors.redAccent,
+                  primary: Color(0xFF387B74),
                 ),
                 child: const Text('Submit',style: TextStyle(fontSize: 18),),
                 onPressed: () {
 
                   submitForm(
-                      productname: nameController.text,description: descController.text,quantity:quantityController.text,price: amountController.text,images: _filename,category: dropdownvalue);
+                      name: nameController.text,desc: descController.text,quant:quantController.text,amount: amountController.text,image: _filename,categ: dropdownvalue);
                 },
               ),
             ),
