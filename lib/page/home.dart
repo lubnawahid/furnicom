@@ -24,35 +24,29 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
 
-  List _loaddata=[];
+  List _loaddata = [];
   late int id;
+
+
   _fetchData() async {
-    var res = await Api()
-        .getData('/api/category_all_view');
+    var res = await Api().getData('/api/category_all_view');
     if (res.statusCode == 200) {
       var items = json.decode(res.body)['data'];
-      print(items);
 
-        _loaddata = items;
+      _loaddata = items;
+
+
 
     } else {
 
-        _loaddata = [];
-        Fluttertoast.showToast(
-          msg: "Currently there is no data available",
-          backgroundColor: Colors.grey,
-
-
+      _loaddata = [];
+      Fluttertoast.showToast(
+        msg: "Currently there is no data available",
+        backgroundColor: Colors.black,
       );
+
     }
   }
-  @override
-  void initState() {
-    // TODO: implement initState
-    super.initState();
-    _fetchData();
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -98,7 +92,7 @@ CustomAppBar(),
                         // print("res$id");
                         return InkWell(
                           onTap: () {
-                            Navigator.push(context, MaterialPageRoute(builder: (context) => CategoryDetails(id: id = _loaddata[index]['id'])),
+                            Navigator.push(context, MaterialPageRoute(builder: (context) => CategoryDetails(id: _loaddata[index]['id'])),
                             );
                           },
                           child: Column(
