@@ -98,7 +98,7 @@ CustomAppBar(),
                         // print("res$id");
                         return InkWell(
                           onTap: () {
-                            Navigator.push(context, MaterialPageRoute(builder: (context) => CategoryDetails()),
+                            Navigator.push(context, MaterialPageRoute(builder: (context) => CategoryDetails(id: id = _loaddata[index]['id'])),
                             );
                           },
                           child: Column(

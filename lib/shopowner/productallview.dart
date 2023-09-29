@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:furnicom/shopowner/productupdate.dart';
 
 import '../services/api.dart';
 
@@ -51,14 +52,15 @@ class _AproductState extends State<Aproduct> {
             gradient: LinearGradient(
               begin: Alignment.topLeft,
               end: Alignment.bottomRight,
-              colors: [Colors.blue, Colors.purple],
+              colors: [Colors.blue, Color(0xFF387B74)],
             ),
           ),
         ),
         leading:
         IconButton( onPressed: (){
           Navigator.pop(context);
-        },icon:Icon(Icons.arrow_back_ios,size: 20,color: Colors.black,)),
+        },
+            icon:Icon(Icons.arrow_back_ios,size: 20,color: Colors.black,)),
         title: Text("Products"),
         actions:[
           // IconButton(icon: Icon(Icons.add), onPressed: () {
@@ -88,33 +90,50 @@ class _AproductState extends State<Aproduct> {
                         padding: EdgeInsets.all(4),
                         decoration: BoxDecoration(),
                         child: ListTile(
-                          leading: CircleAvatar(
 
-                            backgroundColor: Colors.green,
-                            backgroundImage:
-                            NetworkImage(Api().url+_loaddata[index]['image']),
 
-                          ) ,
-                          title: Text(
-                            _loaddata[index]['productname'],
-                            style: TextStyle(fontWeight: FontWeight.bold),
+                          leading: Image.network(
+                            Api().url + _loaddata[index]['images'],
+                            width: 70, fit: BoxFit.fill,
                           ),
 
-                          trailing:
+                          title: Column(
+                            children: [
+                              Text(_loaddata[index]['productname'], style: TextStyle(
+                                  fontSize: 15, fontWeight: FontWeight.bold),),
+                              SizedBox(height: 10,),
+                              Text(_loaddata[index]['description'],
+
+                                  style: TextStyle(fontSize: 15)),
+                              SizedBox(height: 10,),
+                              Text("Rs:" + _loaddata[index]['price'],
+                                  style: TextStyle(fontSize: 15))
+                            ],
+                          ),
+
+                          trailing: Row(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
                           ElevatedButton(
                             style: ElevatedButton.styleFrom(
-                              primary: Colors.deepPurple,
+                              primary: Color(0xFF387B74),
                             ),
                             onPressed: () {
-                            // Navigator.push(context, MaterialPageRoute(builder: (context) => Aproductupdate(id:id) ));
+                             Navigator.push(context, MaterialPageRoute(builder: (context) => ProductUpdate(id:id) ));
                             },
                             child: const Text('Update'),
                           ),
-                        )
+                      SizedBox(width: 8),
+
+                  ],
+                ),
                     ),
+                  ),
                   );
 
-                }),
+                }
+
+                ),
           ],
         ),
       ),

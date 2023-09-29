@@ -8,7 +8,8 @@ import 'package:furnicom/page/details.dart';
 import '../services/api.dart';
 
 class CategoryDetails extends StatefulWidget {
-  const CategoryDetails({Key? key}) : super(key: key);
+  final int id;
+  const CategoryDetails({required this.id});
 
   @override
   State<CategoryDetails> createState() => _CategoryDetailsState();
@@ -74,10 +75,10 @@ class _CategoryDetailsState extends State<CategoryDetails> {
               ),
               trailing: ElevatedButton(
                 onPressed: (){
-                  Navigator.of(context).push(
-                    MaterialPageRoute(builder:(context) => DetailsPage(id:id),
-                    ),
-                  );
+                //   Navigator.of(context).push(
+                //     MaterialPageRoute(builder:(context) => DetailsPage(id: id),
+                //     ),
+                //   );
                 },
                 child: Text('select'),
               ),
