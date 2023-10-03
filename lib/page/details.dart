@@ -1,23 +1,104 @@
+import 'dart:convert';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:furnicom/page/cart.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../core/color.dart';
 import '../core/space.dart';
 import '../core/textstyle.dart';
 import '../model/models.dart';
+import '../services/api.dart';
 
 class DetailsPage extends StatefulWidget {
 final int id;
-  const DetailsPage({required this.id});
+  DetailsPage({required this.id});
 
   @override
   _DetailsPageState createState() => _DetailsPageState();
 }
 
 class _DetailsPageState extends State<DetailsPage> {
+  bool _isLoading = false;
+  late int productid;
+  late int id, cid;
+  late SharedPreferences localStorage;
+  TextEditingController productnameController = TextEditingController();
+  TextEditingController priceController = TextEditingController();
+  TextEditingController descriptionController = TextEditingController();
+
+  String productname='';
+  String price='';
+  String description='';
+String images='';
   int selectIndex = 0;
   int qty = 1;
+
+  Future<void> _viewPro() async {
+    int id = widget.id;
+    var res = await Api().getData('/api/product_single_view/' + id.toString());
+    var body = json.decode(res.body);
+    print(body);
+    setState(() {
+
+      productname = body['data']['productname'];
+      productid =body['data']['id'];
+      price = body['data']['price'];
+      description = body['data']['description'];
+      images=body['data']['images'];
+      productnameController.text = productname;
+
+      descriptionController.text=description;
+      priceController.text = price;
+
+
+    });
+  }
+
+  Future AddCart() async {
+    var prefs = await SharedPreferences.getInstance();
+    id = (prefs.getInt('user_id') ?? 0);
+    print('id ${id}');
+    setState(() {
+      _isLoading = true;
+    });
+
+    var data = {
+      "user": id.toString(),
+      "product": productid.toString(),
+      "quantity": "1",
+      // "artist": id.toString(),
+    };
+//   print(data);
+    var res = await Api().authData(data, '/api/cart');
+    var body = json.decode(res.body);
+    print(body);
+    if (body['success'] == true) {
+      //   print(body);
+      Fluttertoast.showToast(
+        msg: body['message'].toString(),
+        backgroundColor: Colors.grey,
+      );
+
+       Navigator.push(context as BuildContext, MaterialPageRoute(builder: (context)=>Cart()));
+    } else {
+      Fluttertoast.showToast(
+        msg: body['message'].toString(),
+        backgroundColor: Colors.grey,
+      );
+    }
+  }
+  @override
+
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    _viewPro();
+  }
+
+
   @override
   Widget build(BuildContext context) {
     final height = MediaQuery.of(context).size.height;
@@ -76,36 +157,33 @@ class _DetailsPageState extends State<DetailsPage> {
                         bottomRight: Radius.circular(20.0),
                       ),
                     ),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-
-                          InkWell(
-                            onTap: () {
-                              setState(() {
-
-                              });
-                            },
-                            child: Container(
-                              height: 40,
-                              width: 40,
-                              margin: EdgeInsets.symmetric(vertical: 5.0),
-                              //child: Image.asset(),
-                            ),
-                          )
-                      ],
-                    ),
+                    // child: InkWell(
+                    //   onTap: () {
+                    //     setState(() {
+                    //
+                    //     });
+                    //   },
+                    // //   child: Container(
+                    // //     height: 400,
+                    // //     width: 400,
+                    // //     margin: EdgeInsets.symmetric(vertical: 5.0),
+                    // //     child: Image.network(Api().url+images,
+                    // //       width: height/2.8,
+                    // //       fit: BoxFit.cover,
+                    // //   ),
+                    // // )
+                    // ),
                   ),
                 ),
                 Padding(
                   padding: EdgeInsets.only(right: 10.0),
                   child: Align(
                     alignment: Alignment.centerRight,
-                    // child: Image.asset(
-                    //
-                    //   fit: BoxFit.cover,
-                    //   width: height / 2.8,
-                    // ),
+                    child: Image.
+                      network(Api().url+images,
+                      fit: BoxFit.cover,
+                      width: height / 1,
+                    ),
                   ),
                 )
               ],
@@ -122,6 +200,28 @@ class _DetailsPageState extends State<DetailsPage> {
                      ''
                      // style: heading.copyWith(fontSize: 28.0),
                     ),
+
+                  ],
+                ),
+                SpaceVH(height: 20.0),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                Text(
+                productname,
+                  style: Heading,
+                ),
+          ],
+                ),
+
+                    SpaceVH(height: 15.0),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                Text(
+                  description,
+                  style: itemCardDes,
+                ),
                     Container(
                       height: 40,
                       padding: EdgeInsets.symmetric(horizontal: 10.0),
@@ -168,26 +268,20 @@ class _DetailsPageState extends State<DetailsPage> {
                         ),
                       ),
                     ),
-                  ],
+            ],
                 ),
-                SpaceVH(height: 20.0),
-                Text(
-                ''
-                  //style: itemCardDes,
-                ),
-                SpaceVH(height: 20.0),
+                SpaceVH(height: 30.0),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     RichText(
                       text: TextSpan(children: [
+
                         TextSpan(
-                          text: 'Total Price\n',
+                          text: 'Price:'+price,
                           style: subHeading,
                         ),
-                        TextSpan(
 
-                        ),
                       ]),
                     ),
                     Container(
@@ -206,7 +300,7 @@ class _DetailsPageState extends State<DetailsPage> {
                     ),
                     TextButton(
                       onPressed: () {
-                       Navigator.push(context, MaterialPageRoute(builder: (context)=>Cart()));
+                     AddCart();
                       },
                       style: TextButton.styleFrom(
                         backgroundColor: Color(0xFF387B74),

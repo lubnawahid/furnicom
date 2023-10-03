@@ -9,8 +9,13 @@ const TextStyle heading = TextStyle(
 );
 
 const TextStyle subHeading = TextStyle(
-  color: lightBlack,
-  fontSize: 18,
+  color: black,
+  fontSize: 20,
+  fontWeight: FontWeight.w400,
+);
+const TextStyle Heading = TextStyle(
+  color: black,
+  fontSize: 30,
   fontWeight: FontWeight.w400,
 );
 
@@ -21,18 +26,18 @@ const TextStyle tabButtonS = TextStyle(
 );
 const TextStyle tabButtonU = TextStyle(
   color: lightBlack,
-  fontSize: 18,
+  fontSize: 23,
   fontWeight: FontWeight.w400,
 );
 
 const TextStyle itemCardHeading = TextStyle(
   color: black,
-  fontSize: 20,
+  fontSize: 23,
   fontWeight: FontWeight.w700,
 );
 const TextStyle itemCardDes = TextStyle(
-  color: lightBlack,
-  fontSize: 15,
+  color: black,
+  fontSize: 18,
 );
 const TextStyle itemCardPrice = TextStyle(
   color: black,

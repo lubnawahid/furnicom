@@ -18,8 +18,8 @@
 //   Widget build(BuildContext context) {
 //     return InkWell(
 //       onTap: () {
-//         Navigator.push(context,
-//             MaterialPageRoute(builder: (builder) => DetailsPage(model: widget.model)));
+//       //  Navigator.push(context,
+//            // MaterialPageRoute(builder: (builder) => DetailsPage(model: widget.model)));
 //       },
 //       child: Container(
 //         height: 140.0,
