@@ -4,6 +4,7 @@ import 'dart:convert';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:furnicom/page/placeorder.dart';
 import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -28,7 +29,9 @@ class _CartState extends State<Cart> {
   bool isLoading = false;
   late int user_id, cart_id;
   late int qty;
- // late String delivery_mode ;
+  late String delivery_mode ;
+
+  var name;
 
   @override
   void initState() {
@@ -154,40 +157,41 @@ class _CartState extends State<Cart> {
     }
   }
 
-  // Future PlaceOrders() async {
-  //   prefs = await SharedPreferences.getInstance();
-  //   user_id = (prefs.getInt('user_id') ?? 0);
-  //   print('login_id_complaint ${user_id}');
-  //   setState(() {
-  //     _isLoading = true;
-  //   });
-  //
-  //   var data = {
-  //     "user": user_id.toString(),
-  //     "order_dt":formattedDate,
-  //
-  //   };
-  //   print(data);
-  //   var res = await Api().authData(data,'/api/order');
-  //   var body = json.decode(res.body);
-  //   print(body);
-  //   if (body['success'] == true) {
-  //     cart.clear();
-  //
-  //    // Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) =>PlaceOrder()));
-  //     print(body);
-  //     Fluttertoast.showToast(
-  //       msg: body['message'].toString(),
-  //       backgroundColor: Colors.grey,
-  //     );
-  //   }
-  //   else{
-  //     Fluttertoast.showToast(
-  //       msg: body['message'].toString(),
-  //       backgroundColor: Colors.grey,
-  //     );
-  //   }
-  // }
+  Future PlaceOrders() async {
+    prefs = await SharedPreferences.getInstance();
+    user_id = (prefs.getInt('user_id') ?? 0);
+    print('login_id_complaint ${user_id}');
+    setState(() {
+      _isLoading = true;
+    });
+
+    var data = {
+      "user": user_id.toString(),
+      "date":formattedDate,
+      "name" :name.toString(),
+
+    };
+    print(data);
+    var res = await Api().authData(data,'/api/order');
+    var body = json.decode(res.body);
+    print(body);
+    if (body['success'] == true) {
+      cart.clear();
+
+     Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) =>Placeorder()));
+      print(body);
+      Fluttertoast.showToast(
+        msg: body['message'].toString(),
+        backgroundColor: Colors.grey,
+      );
+    }
+    else{
+      Fluttertoast.showToast(
+        msg: body['message'].toString(),
+        backgroundColor: Colors.grey,
+      );
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -323,7 +327,7 @@ class _CartState extends State<Cart> {
           color: Color(0xFF387B74),
           child: InkWell(
             onTap: () {
-            //  PlaceOrders();
+             PlaceOrders();
             },
             child: const SizedBox(
               height: kToolbarHeight,
