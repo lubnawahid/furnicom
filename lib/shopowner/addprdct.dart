@@ -144,7 +144,7 @@ class _AddProductState extends State<AddProduct> {
         String? quant,
         String? amount,
         String? image,
-        String? categ}) async {
+        String? categ,}) async {
     var uri = Uri.parse(Api().url+ '/api/add_products');
 
     prefs = await SharedPreferences.getInstance();

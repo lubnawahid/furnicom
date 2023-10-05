@@ -31,7 +31,7 @@ class _CartState extends State<Cart> {
   late int qty;
   late String delivery_mode ;
 
-  var name;
+
 
   @override
   void initState() {
@@ -168,7 +168,7 @@ class _CartState extends State<Cart> {
     var data = {
       "user": user_id.toString(),
       "date":formattedDate,
-      "name" :name.toString(),
+
 
     };
     print(data);

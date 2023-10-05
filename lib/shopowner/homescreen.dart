@@ -3,6 +3,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:furnicom/shopowner/productallview.dart';
+import 'package:furnicom/shopowner/statusupdation.dart';
 
 import '../core/color.dart';
 import '../core/space.dart';
@@ -190,13 +191,13 @@ class _ShopownerState extends State<Shopowner> {
                           color: Colors.transparent,
                           child: InkWell(
                             onTap: () {
-                              //  Navigator.push(context, MaterialPageRoute(builder: (context)=>viewfeedback()));
+                               Navigator.push(context, MaterialPageRoute(builder: (context)=>Statusupdation()));
 
                             },
                             child: Column(
                               children: [
 
-                                new Image.asset('images/feedback.png',
+                                new Image.asset('images/checklist.png',
                                   height: 90,
                                   width: 150,
                                   alignment: Alignment.center,

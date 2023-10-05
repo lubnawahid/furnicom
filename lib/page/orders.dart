@@ -103,7 +103,7 @@ class _OrdersState extends State<Orders> {
               gradient: LinearGradient(
                 begin: Alignment.topLeft,
                 end: Alignment.bottomRight,
-                colors: [Colors.blue, Colors.purple],
+                colors: [Colors.blue, Color(0xFF387B74)],
               ),
             ),
           ),
@@ -140,10 +140,10 @@ class _OrdersState extends State<Orders> {
                               Column(
                                 children: [
                                   SizedBox(height: 20,),
-                                  Text(_loaddata[index]['productname'].toString(),style: TextStyle(fontSize: 13)),
+                                  Text(_loaddata[index]['productname'].toString(),style: TextStyle(fontSize: 20)),
                                   SizedBox(height: 8,),
 
-                                  Text("Expected on : "+_loaddata[index]['expday'].toString(),style: TextStyle(fontSize: 10)),
+                                  Text("Rs "+_loaddata[index]['total_price'].toString(),style: TextStyle(fontSize: 20)),
                                   SizedBox(height: 8,),
 
                                   ElevatedButton(
