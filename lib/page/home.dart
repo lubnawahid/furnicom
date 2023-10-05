@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:furnicom/page/feedback.dart';
+import 'package:furnicom/page/orders.dart';
 import 'package:furnicom/page/userprofile.dart';
 
 import '../core/color.dart';
@@ -162,7 +163,7 @@ CustomAppBar(),
                       },
                       icon: Icons.home_outlined,
                     ),
-                    SpaceVH(width: 60),
+                    SpaceVH(width: 20),
                     bottomNavButton(
                       onPress: () {
                         Navigator.push(
@@ -174,7 +175,7 @@ CustomAppBar(),
                       icon: Icons.chat_outlined,
                     ),
 
-                    SpaceVH(width: 60),
+                    SpaceVH(width: 20),
                     bottomNavButton(
                       onPress: () {
                         Navigator.push(
@@ -185,7 +186,19 @@ CustomAppBar(),
                       },
                       icon: Icons.person_outline_outlined,
                     ),
-                    SpaceVH(width: 60),
+                    SpaceVH(width: 20),
+                    bottomNavButton(
+                      onPress: () {
+                        // Navigator.push(
+                        //     context,
+                        //     MaterialPageRoute(
+                        //       builder: (context) => Userprofile(),
+                        //     ));
+                      },
+                      icon: Icons.task,
+                    ),
+
+                    SpaceVH(width: 20),
                     bottomNavButton(
                       onPress: () {
                         // Navigator.push(
@@ -195,6 +208,17 @@ CustomAppBar(),
                         //     ));
                       },
                       icon: Icons.notifications,
+                    ),
+                    SpaceVH(width: 20),
+                    bottomNavButton(
+                      onPress: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => Orders(),
+                            ));
+                      },
+                      icon: Icons.shopping_basket_rounded,
                     ),
                   ],
                 ),
@@ -212,7 +236,7 @@ CustomAppBar(),
       onPressed: onPress,
       icon: Icon(
         icon,
-        size: 40,
+        size: 30,
         color: white,
       ),
     );

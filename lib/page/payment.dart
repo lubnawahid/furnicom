@@ -25,7 +25,7 @@ enum Gender {
   cashon_delivery,
 }
 
-enum Delivery { wait, home_delivery }
+enum Delivery { home_delivery }
 
 Delivery? _delivery;
 String? delivery;
@@ -93,10 +93,10 @@ class _PaymentState extends State<Payment> {
     });
 
     var data = {
-      "user_id": user_id.toString(),
+      "user": user_id.toString(),
       "price": price,
       "date": formattedDate,
-      "mode": _delivery == Delivery.home_delivery ? 'Wait' : 'Home Delivery',
+      "mode": _delivery == Delivery.home_delivery ?'Home Delivery' : 'Wait',
     };
     print(data);
     var res = await Api().authData(data, '/api/payment');

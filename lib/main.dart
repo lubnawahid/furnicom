@@ -2,19 +2,28 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:furnicom/page/home.dart';
 import 'package:furnicom/page/welcome.dart';
-
-void main() {
-  runApp(MyApp());
+import 'package:shared_preferences/shared_preferences.dart';
+late SharedPreferences  sharedp;
+void main() async{
+ WidgetsFlutterBinding.ensureInitialized();
+ sharedp = await SharedPreferences.getInstance();
+ runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
+  MyApp({super.key});
+
+  int pref = sharedp.getInt('login_id')??0;
+  int userpref = sharedp.getInt('user_id') ??0;
   @override
   Widget build(BuildContext context) {
+    print("login id $pref");
+    print("user Id $userpref");
     return MaterialApp(
 
       title: 'Flutter Demo',
       debugShowCheckedModeBanner: false,
-      home: Welcome(),
+      home:pref !=0 ? HomePage() : Welcome(),
       theme: ThemeData(
         primarySwatch: MaterialColor(0xFF387B74, <int, Color>{
           50: Color(0xFF387B74),
@@ -28,6 +37,7 @@ class MyApp extends StatelessWidget {
           800: Color(0xFF387B74),
           900: Color(0xFF387B74),
         }),
+
       ),
     );
   }
